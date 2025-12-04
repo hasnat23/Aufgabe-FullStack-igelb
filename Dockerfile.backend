@@ -1,0 +1,13 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package.json package-lock.json* ./
+
+RUN npm install && npm install -D ts-node typescript @types/node @types/express
+
+COPY server/ ./server/
+
+EXPOSE 5000
+
+CMD ["npx", "ts-node", "server/index.ts"]
