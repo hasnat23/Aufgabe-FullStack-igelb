@@ -1,81 +1,101 @@
-import axios, { AxiosError } from 'axios'
-import type { Website, CrawlResponse, ChangeResponse } from '../types'
+import axios, { AxiosError } from "axios";
+import type { Website, CrawlResponse, ChangeResponse } from "../types";
 
-const API_BASE = '/api'
+const API_BASE = "";
 
-// Custom error class for better error handling
+// Benutzerdefinierte Fehlerklasse für besseres Fehlerhandling
 export class APIError extends Error {
   constructor(
     public statusCode: number | null,
     public originalError: unknown,
     message: string
   ) {
-    super(message)
-    this.name = 'APIError'
+    super(message);
+    this.name = "APIError";
   }
 }
 
 /**
- * Handle HTTP errors with meaningful messages
+ * Behandle HTTP-Fehler mit aussagekräftigen Fehlermeldungen
  */
 function handleError(error: unknown, context: string): APIError {
   if (axios.isAxiosError(error)) {
-    const axiosError = error as AxiosError
-    const statusCode = axiosError.response?.status ?? null
-    const message = `${context}: ${axiosError.response?.status ?? 'Network error'} - ${
-      (axiosError.response?.data as any)?.error || axiosError.message
-    }`
-    return new APIError(statusCode, error, message)
+    const axiosError = error as AxiosError;
+    const statusCode = axiosError.response?.status ?? null;
+    const message = `${context}: ${
+      axiosError.response?.status ?? "Netzwerkfehler"
+    } - ${(axiosError.response?.data as any)?.error || axiosError.message}`;
+    return new APIError(statusCode, error, message);
   }
-  
-  const message = `${context}: ${error instanceof Error ? error.message : String(error)}`
-  return new APIError(null, error, message)
+
+  const message = `${context}: ${
+    error instanceof Error ? error.message : String(error)
+  }`;
+  return new APIError(null, error, message);
 }
 
+// Hole alle überwachten Websites vom Server
 export async function fetchWebsites(): Promise<Website[]> {
   try {
-    const response = await axios.get(`${API_BASE}/websites`, { timeout: 10000 })
-    return response.data
+    const response = await axios.get(`${API_BASE}/websites`, {
+      timeout: 10000,
+    });
+    return response.data;
   } catch (error) {
-    throw handleError(error, 'Failed to fetch websites')
+    throw handleError(error, "Fehler beim Abrufen von Websites");
   }
 }
 
-export async function createWebsite(website: Omit<Website, 'id' | 'createdAt'>): Promise<Website> {
+// Erstelle eine neue Website zur Überwachung
+export async function createWebsite(
+  website: Omit<Website, "id" | "createdAt">
+): Promise<Website> {
   try {
-    const response = await axios.post(`${API_BASE}/websites`, website, { timeout: 10000 })
-    return response.data
+    const response = await axios.post(`${API_BASE}/websites`, website, {
+      timeout: 10000,
+    });
+    return response.data;
   } catch (error) {
-    throw handleError(error, 'Failed to create website')
+    throw handleError(error, "Fehler beim Erstellen der Website");
   }
 }
 
+// Starte einen Crawl der Website um Änderungen zu erkennen
 export async function triggerCrawl(websiteId: string): Promise<CrawlResponse> {
   try {
     const response = await axios.post(
       `${API_BASE}/crawl/${websiteId}`,
       {},
       { timeout: 30000 }
-    )
-    return response.data
+    );
+    return response.data;
   } catch (error) {
-    throw handleError(error, `Failed to crawl website ${websiteId}`)
+    throw handleError(error, `Fehler beim Crawl der Website ${websiteId}`);
   }
 }
 
-export async function getChangeHistory(websiteId: string): Promise<ChangeResponse[]> {
+// Hole den Änderungsverlauf einer Website
+export async function getChangeHistory(
+  websiteId: string
+): Promise<ChangeResponse[]> {
   try {
-    const response = await axios.get(`${API_BASE}/changes/${websiteId}`, { timeout: 10000 })
-    return response.data
+    const response = await axios.get(`${API_BASE}/changes/${websiteId}`, {
+      timeout: 10000,
+    });
+    return response.data;
   } catch (error) {
-    throw handleError(error, `Failed to fetch change history for ${websiteId}`)
+    throw handleError(
+      error,
+      `Fehler beim Abrufen des Änderungsverlaufs für ${websiteId}`
+    );
   }
 }
 
+// Lösche eine Website aus der Überwachung
 export async function deleteWebsite(websiteId: string): Promise<void> {
   try {
-    await axios.delete(`${API_BASE}/websites/${websiteId}`, { timeout: 10000 })
+    await axios.delete(`${API_BASE}/websites/${websiteId}`, { timeout: 10000 });
   } catch (error) {
-    throw handleError(error, `Failed to delete website ${websiteId}`)
+    throw handleError(error, `Fehler beim Löschen der Website ${websiteId}`);
   }
 }

@@ -1,10 +1,11 @@
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle } from "lucide-react";
 
 interface ErrorAlertProps {
-  message: string
-  onDismiss?: () => void
+  message: string;
+  onDismiss?: () => void;
 }
 
+// Zeigt eine Fehler-Benachrichtigung an
 export function ErrorAlert({ message, onDismiss }: ErrorAlertProps) {
   return (
     <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
@@ -21,5 +22,5 @@ export function ErrorAlert({ message, onDismiss }: ErrorAlertProps) {
         </button>
       )}
     </div>
-  )
+  );
 }
