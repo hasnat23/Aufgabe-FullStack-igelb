@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Website Change Monitor
 
 A Proof of Concept web application that monitors websites for content changes and uses AI to describe those changes.
@@ -354,3 +355,18 @@ MIT - Feel free to use for learning and projects
 **Last Updated**: 2024
 **Status**: Proof of Concept
 **Time Investment**: 4-6 hours
+=======
+# Aufgabe Frontend - igelb
+
+## Beschreibung
+
+Dies ist die Coding-Aufgabe für die Frontend-Entwickler-Herausforderung bei igelb.
+
+Dies ist ein Projekt für Frontend-Entwickler, das verschiedene Frontend-Entwicklungsaufgaben und Anforderungen enthält.
+
+---
+
+**Projekt**: Frontend Coding Challenge
+**Unternehmen**: igelb
+**Typ**: Frontend-Entwicklung
+>>>>>>> 05552021a725ecc36374bb584cfba209dcc38417
