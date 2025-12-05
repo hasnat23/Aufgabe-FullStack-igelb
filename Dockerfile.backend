@@ -9,6 +9,6 @@ RUN npm install --production
 COPY server.cjs ./
 COPY data ./data
 
-EXPOSE 5000
+EXPOSE 5001
 
 CMD ["node", "server.cjs"]

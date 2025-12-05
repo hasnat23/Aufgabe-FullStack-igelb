@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "id": "1becc4ff-f20f-4cde-8d12-269a52dec65c",
+    "websiteId": "7ccb46d0-795b-40a1-bb27-a9bf91811a05",
+    "previousCrawlId": "b2eb3762-84f7-4578-9d56-78c886c124b8",
+    "currentCrawlId": "ae52669e-6ae5-4ea1-8cf3-37c25a85703f",
+    "changes": "Keine signifikanten Änderungen erkannt",
+    "timestamp": "2025-12-05T13:19:32.703Z",
+    "similarity": 1
+  },
+  {
+    "id": "ca41e893-5f8e-4497-99a1-03fb98a57e84",
+    "websiteId": "7ccb46d0-795b-40a1-bb27-a9bf91811a05",
+    "previousCrawlId": "ae52669e-6ae5-4ea1-8cf3-37c25a85703f",
+    "currentCrawlId": "38f4357f-aef8-428a-abca-69b1df0ecf62",
+    "changes": "Keine signifikanten Änderungen erkannt",
+    "timestamp": "2025-12-05T13:19:32.862Z",
+    "similarity": 1
+  },
+  {
+    "id": "fbe11990-b931-49d2-9e13-33a10af9990c",
+    "websiteId": "7ccb46d0-795b-40a1-bb27-a9bf91811a05",
+    "previousCrawlId": "38f4357f-aef8-428a-abca-69b1df0ecf62",
+    "currentCrawlId": "07dc966b-7d6b-48e6-9e11-342e8e304aad",
+    "changes": "Keine signifikanten Änderungen erkannt",
+    "timestamp": "2025-12-05T13:19:45.562Z",
+    "similarity": 1
+  },
+  {
+    "id": "bd8b2f07-a29c-4c33-9e1d-2849c6de0a2d",
+    "websiteId": "7ccb46d0-795b-40a1-bb27-a9bf91811a05",
+    "previousCrawlId": "07dc966b-7d6b-48e6-9e11-342e8e304aad",
+    "currentCrawlId": "5d930e8c-25ea-40bc-b267-088808b07c65",
+    "changes": "Keine signifikanten Änderungen erkannt",
+    "timestamp": "2025-12-05T13:19:45.830Z",
+    "similarity": 1
+  },
+  {
+    "id": "c98838b0-f375-45fe-9ad2-ad177d93eb23",
+    "websiteId": "65866f04-f2ad-47e7-8646-1761beef7418",
+    "previousCrawlId": "64382646-d5af-4c5b-8d4b-984a857f6b56",
+    "currentCrawlId": "6a1fae76-bfc9-40ed-9351-c96785b32737",
+    "changes": "Inhalt geändert: -245 Zeichen",
+    "timestamp": "2025-12-05T13:24:50.014Z",
+    "similarity": 0.013201320132013201
+  },
+  {
+    "id": "dfea17ec-74fe-476f-b9c8-0ad51d5174ba",
+    "websiteId": "example-site-001",
+    "previousCrawlId": "c2bb88d7-5196-4a1c-8ffe-b305bf753dab",
+    "currentCrawlId": "289fb771-09ad-4093-b25b-5aaad8c7c3b3",
+    "changes": "Keine signifikanten Änderungen erkannt",
+    "timestamp": "2025-12-05T13:25:20.356Z",
+    "similarity": 1
+  },
+  {
+    "id": "da170bf7-f04c-41d7-b988-4d927ef90a3f",
+    "websiteId": "google-site-003",
+    "previousCrawlId": "bad50550-35f3-43de-81a5-135338682078",
+    "currentCrawlId": "f9e2e8b6-7398-462d-b550-ca92f1d9a4ae",
+    "changes": "Keine signifikanten Änderungen erkannt",
+    "timestamp": "2025-12-05T13:26:47.149Z",
+    "similarity": 1
+  }
+]

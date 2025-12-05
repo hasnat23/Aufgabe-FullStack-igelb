@@ -2,15 +2,17 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Accept build argument for API URL
-ARG VITE_API_BASE=http://localhost:5000
-ENV VITE_API_BASE=$VITE_API_BASE
-
 COPY package.json package-lock.json* ./
 
 RUN npm ci
 
 COPY . .
+
+# Build frontend - API_BASE will be set to point to backend on localhost:5001
+# This works because both containers expose ports to the host machine
+# Browser running on host will connect to localhost:5001
+ARG VITE_API_BASE=http://localhost:5001
+ENV VITE_API_BASE=$VITE_API_BASE
 
 RUN npm run build
 
@@ -25,4 +27,4 @@ COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
-CMD ["serve", "-s", "dist", "-l", "3000"]
+CMD ["serve", "-s", "dist", "-l", "3000", "--no-clipboard"]

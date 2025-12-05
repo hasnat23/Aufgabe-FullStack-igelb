@@ -2,15 +2,35 @@
 
 ## 🚀 Projekt ausführen
 
-### Voraussetzungen
+### Option 1: Mit Docker (empfohlen)
 
+**Voraussetzungen:**
+- Docker & Docker Compose installiert
+
+**Start:**
+
+```bash
+cd Aufgabe-FullStack-igelb
+
+# Optional: OpenAI API-Key setzen
+export OPENAI_API_KEY="sk-..."
+
+# Stack starten
+docker-compose up --build
+
+# Nach Start öffne: http://localhost:3000
+```
+
+### Option 2: Manuell (für Entwicklung)
+
+**Voraussetzungen:**
 - Node.js 20+
 - npm 9+
 
-### Einrichtung (einmalig)
+**Einrichtung (einmalig):**
 
 ```bash
-cd website-change-monitor
+cd Aufgabe-FullStack-igelb
 npm install
 mkdir -p data
 ```
@@ -20,7 +40,10 @@ mkdir -p data
 **Terminal 1 - Backend:**
 
 ```bash
-cd website-change-monitor
+# Optional: OpenAI API-Key setzen
+export OPENAI_API_KEY="sk-..."
+
+# Backend starten
 node server.cjs
 ```
 
@@ -35,7 +58,6 @@ Du solltest sehen:
 **Terminal 2 - Frontend:**
 
 ```bash
-cd website-change-monitor
 npm run dev
 ```
 

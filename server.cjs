@@ -1,9 +1,9 @@
 const http = require("http");
+const https = require("https");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const { v4: uuidv4 } = require("uuid");
-const https = require("https");
 
 // Konfiguration für Datenspeicherung
 const DATA_DIR = path.join(__dirname, "data");
@@ -47,6 +47,112 @@ const writeJsonFile = (filePath, data) => {
 // Generiere SHA256 Hash des Website-Inhalts
 const hashContent = (content) => {
   return crypto.createHash("sha256").update(content).digest("hex");
+};
+
+// Rufe OpenAI API auf, um Änderungen zu vergleichen
+const compareWithLLM = async (previousContent, currentContent) => {
+  const apiKey = process.env.OPENAI_API_KEY;
+  
+  // Fallback auf einfachen Vergleich, wenn kein API-Schlüssel vorhanden ist
+  if (!apiKey) {
+    console.warn("⚠️  OPENAI_API_KEY nicht gesetzt - verwende einfachen Vergleich");
+    if (previousContent === currentContent) {
+      return "Keine signifikanten Änderungen erkannt";
+    }
+    const lengthDiff = currentContent.length - previousContent.length;
+    return `Inhalt geändert: ${lengthDiff > 0 ? '+' : ''}${lengthDiff} Zeichen`;
+  }
+
+  try {
+    const prompt = `Vergleiche diese beiden Website-Inhalte und beschreibe die Hauptänderungen prägnant auf Deutsch (max 200 Zeichen):\n\nVORHER:\n${previousContent.substring(0, 1000)}\n\nNACHHER:\n${currentContent.substring(0, 1000)}`;
+    
+    const requestData = JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: "Du bist ein hilfreicher Assistent, der Website-Änderungen zusammenfasst."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      max_tokens: 150,
+      temperature: 0.3
+    });
+
+    return new Promise((resolve, reject) => {
+      const options = {
+        hostname: "api.openai.com",
+        path: "/v1/chat/completions",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Length": Buffer.byteLength(requestData)
+        },
+        timeout: 10000
+      };
+
+      const req = https.request(options, (res) => {
+        let data = "";
+        res.on("data", (chunk) => data += chunk);
+        res.on("end", () => {
+          if (res.statusCode === 200) {
+            try {
+              const response = JSON.parse(data);
+              resolve(response.choices[0].message.content.trim());
+            } catch (err) {
+              reject(new Error("Fehler beim Parsen der LLM-Antwort"));
+            }
+          } else {
+            console.error("LLM API Fehler:", res.statusCode, data);
+            resolve(fallbackComparison(previousContent, currentContent));
+          }
+        });
+      });
+
+      req.on("error", (err) => {
+        console.error("LLM API Netzwerkfehler:", err.message);
+        resolve(fallbackComparison(previousContent, currentContent));
+      });
+
+      req.on("timeout", () => {
+        req.destroy();
+        console.error("LLM API Timeout");
+        resolve(fallbackComparison(previousContent, currentContent));
+      });
+
+      req.write(requestData);
+      req.end();
+    });
+  } catch (err) {
+    console.error("LLM-Vergleichsfehler:", err);
+    return fallbackComparison(previousContent, currentContent);
+  }
+};
+
+// Fallback-Vergleich ohne LLM
+const fallbackComparison = (previousContent, currentContent) => {
+  if (previousContent === currentContent) {
+    return "Keine signifikanten Änderungen erkannt";
+  }
+  const lengthDiff = currentContent.length - previousContent.length;
+  const similarity = calculateSimilarity(previousContent, currentContent);
+  return `Inhalt geändert: ${lengthDiff > 0 ? '+' : ''}${lengthDiff} Zeichen (${Math.round(similarity * 100)}% ähnlich)`;
+};
+
+// Berechne einfache Ähnlichkeit basierend auf gemeinsamen Zeichen
+const calculateSimilarity = (str1, str2) => {
+  const maxLen = Math.max(str1.length, str2.length);
+  if (maxLen === 0) return 1.0;
+  const minLen = Math.min(str1.length, str2.length);
+  let matches = 0;
+  for (let i = 0; i < minLen; i++) {
+    if (str1[i] === str2[i]) matches++;
+  }
+  return matches / maxLen;
 };
 
 // Hole Website-Inhalt mit Timeout und HTML-Bereinigung
@@ -222,11 +328,9 @@ const server = http.createServer(async (req, res) => {
           .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
 
         if (previousCrawl) {
-          const similarity = content === previousCrawl.content ? 1.0 : 0.5;
-          const changes =
-            similarity > 0.95
-              ? "Keine signifikanten Änderungen erkannt"
-              : `Inhalt geändert von ${previousCrawl.content.length} zu ${content.length} Zeichen`;
+          // Verwende LLM für intelligenten Vergleich
+          const changes = await compareWithLLM(previousCrawl.content, content);
+          const similarity = calculateSimilarity(previousCrawl.content, content);
 
           const changeDetection = {
             id: uuidv4(),
@@ -291,7 +395,7 @@ const server = http.createServer(async (req, res) => {
 initializeFiles();
 
 // Starte HTTP-Server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 server.listen(PORT, () => {
   console.log(`\n✅ Backend läuft auf http://localhost:${PORT}`);
   console.log(`📁 Datenspeicherung: ${DATA_DIR}`);

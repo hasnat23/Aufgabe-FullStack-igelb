@@ -7,19 +7,19 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/websites': {
-        target: 'http://localhost:5000',
+        target: 'http://localhost:5001',
         changeOrigin: true
       },
       '/crawl': {
-        target: 'http://localhost:5000',
+        target: 'http://localhost:5001',
         changeOrigin: true
       },
       '/changes': {
-        target: 'http://localhost:5000',
+        target: 'http://localhost:5001',
         changeOrigin: true
       },
       '/health': {
-        target: 'http://localhost:5000',
+        target: 'http://localhost:5001',
         changeOrigin: true
       }
     }

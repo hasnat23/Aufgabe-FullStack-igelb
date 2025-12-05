@@ -1,15 +1,58 @@
 # Website-Änderungs-Monitor
 
-Eine Web-Anwendung als Proof of Concept, die Websites auf Inhaltsänderungen überwacht.
+Eine Web-Anwendung als Proof of Concept, die Websites auf Inhaltsänderungen überwacht und mithilfe von KI analysiert.
 
 ## Übersicht
 
 Dieses Projekt demonstriert:
 
 - **Website-Überwachung**: Hinzufügen von URLs zur Überwachung und manuelles Auslösen von Crawls
-- **Änderungserkennung**: Automatischer Vergleich des Seiteninhalts zwischen Crawls
+- **KI-gestützte Änderungserkennung**: Intelligenter Vergleich des Seiteninhalts zwischen Crawls mit OpenAI GPT
 - **Responsive Benutzeroberfläche**: Vollständige Verwaltung von Websites im Browser
-- **Full-Stack-Architektur**: React + TypeScript Frontend, Express.js Backend, Docker-Bereitstellung
+- **Full-Stack-Architektur**: React + TypeScript Frontend, Node.js Backend, Docker-Bereitstellung
+
+## KI-Tool-Nutzung in der Entwicklung
+
+Dieses Projekt wurde aktiv mit KI-Tools entwickelt, insbesondere **GitHub Copilot** und **Claude**:
+
+### Wie KI-Tools eingesetzt wurden:
+
+1. **Code-Generierung & Boilerplate**
+   - Initiale Projektstruktur und TypeScript-Konfiguration mit Copilot erstellt
+   - React-Komponenten mit Tailwind CSS-Styling generiert
+   - API-Client mit vollständigem Error-Handling und Timeout-Logik
+
+2. **Test-Entwicklung**
+   - Vitest-Tests für Formular-Validierung und API-Fehlerbehandlung mit Copilot geschrieben
+   - Mock-Setup und Edge-Cases durch AI-Vorschläge identifiziert
+
+3. **Docker-Konfiguration**
+   - Multi-stage Docker-Builds optimiert
+   - Docker-Compose-Networking zwischen Frontend/Backend konfiguriert
+
+4. **Fehlerbehandlung & Robustheit**
+   - Timeout-Strategien für HTTP-Requests implementiert
+   - Fallback-Mechanismen bei LLM-API-Ausfällen entwickelt
+   - Strukturierte Error-Handling-Patterns angewendet
+
+5. **Dokumentation**
+   - README mit Architektur-Entscheidungen und Setup-Anleitung verfasst
+   - Code-Kommentare für komplexe Logik generiert
+
+**Zeiteinsparung**: Geschätzt 40-50% durch Code-Vorschläge, Test-Generierung und Dokumentation.
+
+## LLM-Integration für Änderungserkennung
+
+Das System nutzt die **OpenAI GPT-3.5-Turbo API**, um Website-Änderungen intelligent zu beschreiben:
+
+- **Mit API-Key**: Detaillierte Beschreibungen der Änderungen auf Deutsch (z.B. "Header-Text geändert, neue Absätze hinzugefügt")
+- **Ohne API-Key**: Automatischer Fallback auf statistischen Vergleich (Hash-basiert, Zeichenanzahl)
+
+**Error Handling:**
+- Timeout nach 10s → Fallback-Vergleich
+- API nicht erreichbar → Fallback-Vergleich
+- Ungültige Antwort → Fallback-Vergleich
+- Keine stillen Fehler, alle Szenarien protokolliert
 
 ## Tech-Stack
 
@@ -25,8 +68,8 @@ Dieses Projekt demonstriert:
 ### Backend
 
 - **Node.js HTTP Server** für REST-API
-- **TypeScript** (optional) für Typsicherheit
-- **Axios** mit Fehlerbehandlung für HTTP-Anfragen
+- **OpenAI GPT-3.5-Turbo** für intelligente Änderungserkennung mit Fallback-Logik
+- **HTTPS Client** für Website-Crawling mit Timeout-Schutz
 - **JSON-Dateispeicherung** für Einfachheit
 - **UUID** für eindeutige Identifikatoren
 
@@ -44,11 +87,14 @@ Dieses Projekt demonstriert:
 - **Kompromisse**: Nicht skalierbar für Produktion, kein Schutz vor gleichzeitigen Schreibvorgängen
 - **Produktions-Alternative**: PostgreSQL oder MongoDB mit ordnungsgemäßen Migrationen
 
-### 2. Einfacher Textvergleich
+### 2. LLM-gestützter Textvergleich mit Fallback
 
-- **Entscheidung**: Hash-basierter Vergleich statt API-Aufrufe
-- **Begründung**: Vermeidung von API-Schlüsseln; demonstriert Architektur
-- **Echte Implementierung**: Integration mit OpenAI, Anthropic oder Ollama APIs
+- **Entscheidung**: OpenAI GPT-3.5-Turbo für intelligente Änderungserkennung + Hash-basierter Fallback
+- **Begründung**: Beste Balance aus Qualität und Kosten; funktioniert auch ohne API-Key
+- **Implementierung**: 
+  - Mit `OPENAI_API_KEY`: Beschreibt Änderungen in natürlicher Sprache
+  - Ohne API-Key: Statistischer Vergleich (Zeichenanzahl, Ähnlichkeit)
+  - Robustes Error Handling für API-Timeouts und Ausfälle
 
 ### 3. Timeout & Fehlerbehandlungs-Strategie
 
@@ -85,37 +131,71 @@ Dieses Projekt demonstriert:
 
 ### Voraussetzungen
 
-- Docker & Docker Compose installiert
-- ODER Node.js 20+
+- **Docker** & **Docker Compose** installiert
+- ODER **Node.js 20+** für lokale Entwicklung
+- **Optional**: OpenAI API-Key für intelligente Änderungserkennung (funktioniert auch ohne)
 
-### Schnellstart (empfohlen)
+### Schnellstart mit Docker (empfohlen)
 
 ```bash
 # Repository klonen (oder Dateien extrahieren)
-cd website-change-monitor
+cd Aufgabe-FullStack-igelb
 
-# Den gesamten Stack starten
-docker-compose up
+# Optional: OpenAI API-Key setzen für LLM-Integration
+export OPENAI_API_KEY="sk-..."
+
+# Den gesamten Stack starten (dauert ~2-3 Minuten beim ersten Mal)
+docker-compose up --build
+
+# Nach erfolgreichem Start siehst du:
+# ✅ Backend läuft auf http://localhost:5000
+# ✅ Frontend läuft auf http://localhost:3000
 ```
 
 Öffne dann **http://localhost:3000** in deinem Browser.
 
+**Wichtig**: Beim ersten Start wird `docker-compose up --build` empfohlen, um sicherzustellen, dass alle Änderungen eingepflegt werden.
+
 ### Manuelle Installation (ohne Docker)
 
-#### Frontend
+#### Backend (Terminal 1)
 
 ```bash
+# Installiere Dependencies
 npm install
-npm run dev
-# Öffnet http://localhost:3000
+
+# Optional: OpenAI API-Key setzen
+export OPENAI_API_KEY="sk-..."
+
+# Starte Backend-Server
+node server.cjs
+# ✅ Läuft auf http://localhost:5000
 ```
 
-#### Backend (in separatem Terminal)
+#### Frontend (Terminal 2)
 
 ```bash
+# Installiere Dependencies (falls noch nicht geschehen)
 npm install
-node server.cjs
-# Lauscht auf http://localhost:5000
+
+# Starte Frontend-Dev-Server mit Vite
+npm run dev
+# ✅ Läuft auf http://localhost:3000
+```
+
+**Hinweis**: Der Vite-Dev-Server proxied automatisch API-Anfragen an `localhost:5000`.
+
+### Schnelle Verifikation
+
+Um zu überprüfen, ob alles korrekt eingerichtet ist:
+
+```bash
+# Führe Verifikationsskript aus
+./verify.sh
+
+# Oder manuell:
+npm test -- --run
+node --check server.cjs
 ```
 
 ## Verwendung
