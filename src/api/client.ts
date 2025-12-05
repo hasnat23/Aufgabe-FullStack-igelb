@@ -1,7 +1,8 @@
 import axios, { AxiosError } from "axios";
 import type { Website, CrawlResponse, ChangeResponse } from "../types";
 
-const API_BASE = "";
+// Use environment variable for API base URL, defaulting to same origin for dev proxy
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 
 // Benutzerdefinierte Fehlerklasse für besseres Fehlerhandling
 export class APIError extends Error {
