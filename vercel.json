@@ -2,22 +2,27 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "functions": {
+    "api/**/*.cjs": {
+      "runtime": "nodejs20.x"
+    }
+  },
   "rewrites": [
     {
       "source": "/websites/:path*",
-      "destination": "/api/websites"
+      "destination": "/api/websites.cjs"
     },
     {
       "source": "/websites",
-      "destination": "/api/websites"
+      "destination": "/api/websites.cjs"
     },
     {
       "source": "/crawl/:websiteId",
-      "destination": "/api/crawl?websiteId=:websiteId"
+      "destination": "/api/crawl.cjs?websiteId=:websiteId"
     },
     {
       "source": "/changes/:websiteId",
-      "destination": "/api/changes?websiteId=:websiteId"
+      "destination": "/api/changes.cjs?websiteId=:websiteId"
     }
   ],
   "headers": [
