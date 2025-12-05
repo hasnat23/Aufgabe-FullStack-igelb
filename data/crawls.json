@@ -75,5 +75,33 @@
     "timestamp": "2025-12-05T13:26:47.146Z",
     "content": "Google Suche Bilder Maps Play YouTube News Gmail Drive Mehr &raquo; Webprotokoll | Einstellungen | Anmelden &nbsp; Erweiterte Suche Werbeprogramme Unternehmensangebote �ber Google Google.de &copy; 2025 - Datenschutzerkl�rung - Nutzungsbedingungen",
     "contentHash": "1cfbc69459b210d04f9e15c196df8f76cae2519eaea75212d12314389162c65e"
+  },
+  {
+    "id": "a0691209-767e-478b-a7cc-e5350ee39e20",
+    "websiteId": "65866f04-f2ad-47e7-8646-1761beef7418",
+    "timestamp": "2025-12-05T13:44:54.631Z",
+    "content": "Just a moment... Enable JavaScript and cookies to continue",
+    "contentHash": "ae0b26c68939e8214056c2517af3b5091f1c674c8aef5f1e1fbab7804a78829b"
+  },
+  {
+    "id": "8543488d-4d8b-41d7-bfd4-3d3bd42d82e8",
+    "websiteId": "example-site-001",
+    "timestamp": "2025-12-05T13:44:56.695Z",
+    "content": "Example Domain Example Domain This domain is for use in documentation examples without needing permission. Avoid use in operations. Learn more",
+    "contentHash": "d003f90bc10db991b76e6fb480123cfce2cbb2b2784abe687fccccfa7ecacad8"
+  },
+  {
+    "id": "2dd2ae32-363e-4d16-9fca-6aed1bfe024c",
+    "websiteId": "a0bff526-c54e-49b9-a77c-f6ddf1d7b92f",
+    "timestamp": "2025-12-05T13:45:24.067Z",
+    "content": "",
+    "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "id": "fcffca8c-750d-487e-8d15-69085aefe965",
+    "websiteId": "a0bff526-c54e-49b9-a77c-f6ddf1d7b92f",
+    "timestamp": "2025-12-05T13:45:33.626Z",
+    "content": "",
+    "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   }
 ]

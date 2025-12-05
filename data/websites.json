@@ -1,20 +1,8 @@
 [
   {
-    "id": "example-site-001",
-    "name": "Example Domain",
-    "url": "https://example.com",
-    "createdAt": "2025-12-05T12:00:00.000Z"
-  },
-  {
-    "id": "65866f04-f2ad-47e7-8646-1761beef7418",
-    "name": "Medium",
-    "url": "https://medium.com/",
-    "createdAt": "2025-12-05T13:24:20.470Z"
-  },
-  {
-    "id": "google-site-003",
-    "name": "Google",
-    "url": "https://www.google.com",
-    "createdAt": "2025-12-05T13:30:00.000Z"
+    "id": "a0bff526-c54e-49b9-a77c-f6ddf1d7b92f",
+    "name": "facebook",
+    "url": "https://facebook.com",
+    "createdAt": "2025-12-05T13:45:20.820Z"
   }
 ]
