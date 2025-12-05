@@ -88,5 +88,23 @@
     "changes": "Keine signifikanten Änderungen erkannt",
     "timestamp": "2025-12-05T13:45:33.627Z",
     "similarity": 1
+  },
+  {
+    "id": "1b4ce79f-18e4-4dba-8f9c-19732ae21a56",
+    "websiteId": "a0bff526-c54e-49b9-a77c-f6ddf1d7b92f",
+    "previousCrawlId": "fcffca8c-750d-487e-8d15-69085aefe965",
+    "currentCrawlId": "8b816bbf-acae-42a9-ba9b-e7717789ef6c",
+    "changes": "Keine signifikanten Änderungen erkannt",
+    "timestamp": "2025-12-05T14:59:56.849Z",
+    "similarity": 1
+  },
+  {
+    "id": "8983b897-d14c-4e83-b0b0-1e5a8397bd7e",
+    "websiteId": "fb7df5e7-c515-4c33-b219-87e9387a46fb",
+    "previousCrawlId": "1165e780-f752-493d-b9c7-717ce1e11d28",
+    "currentCrawlId": "cfc3c87c-9a97-4fb6-8bfc-d302e42adc3c",
+    "changes": "Keine signifikanten Änderungen erkannt",
+    "timestamp": "2025-12-05T14:59:59.916Z",
+    "similarity": 1
   }
 ]
