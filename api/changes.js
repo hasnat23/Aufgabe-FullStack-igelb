@@ -4,18 +4,29 @@ const path = require("path");
 const DATA_DIR = path.join("/tmp", "data");
 const CHANGES_FILE = path.join(DATA_DIR, "changes.json");
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
+// Initialize data directory and files
+const initializeStorage = () => {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    if (!fs.existsSync(CHANGES_FILE)) {
+      fs.writeFileSync(CHANGES_FILE, JSON.stringify([], null, 2));
+    }
+  } catch (err) {
+    console.error("Error initializing storage:", err);
+  }
+};
 
 const readJsonFile = (filePath) => {
   try {
+    initializeStorage();
     if (!fs.existsSync(filePath)) {
       return [];
     }
     return JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  } catch {
+  } catch (err) {
+    console.error("Error reading file:", err);
     return [];
   }
 };

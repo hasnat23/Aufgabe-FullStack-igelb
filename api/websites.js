@@ -5,24 +5,37 @@ const { v4: uuidv4 } = require("uuid");
 const DATA_DIR = path.join("/tmp", "data");
 const WEBSITES_FILE = path.join(DATA_DIR, "websites.json");
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
+// Initialize data directory and files
+const initializeStorage = () => {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    if (!fs.existsSync(WEBSITES_FILE)) {
+      fs.writeFileSync(WEBSITES_FILE, JSON.stringify([], null, 2));
+    }
+  } catch (err) {
+    console.error("Error initializing storage:", err);
+  }
+};
 
 const readJsonFile = (filePath) => {
   try {
+    initializeStorage();
     if (!fs.existsSync(filePath)) {
       return [];
     }
-    return JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  } catch {
+    const content = fs.readFileSync(filePath, "utf-8");
+    return JSON.parse(content);
+  } catch (err) {
+    console.error("Error reading file:", err);
     return [];
   }
 };
 
 const writeJsonFile = (filePath, data) => {
   try {
+    initializeStorage();
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
   } catch (err) {
     console.error(`Error writing to ${filePath}:`, err);

@@ -9,24 +9,38 @@ const WEBSITES_FILE = path.join(DATA_DIR, "websites.json");
 const CRAWLS_FILE = path.join(DATA_DIR, "crawls.json");
 const CHANGES_FILE = path.join(DATA_DIR, "changes.json");
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
+// Initialize data directory and files
+const initializeStorage = () => {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    [WEBSITES_FILE, CRAWLS_FILE, CHANGES_FILE].forEach(file => {
+      if (!fs.existsSync(file)) {
+        fs.writeFileSync(file, JSON.stringify([], null, 2));
+      }
+    });
+  } catch (err) {
+    console.error("Error initializing storage:", err);
+  }
+};
 
 const readJsonFile = (filePath) => {
   try {
+    initializeStorage();
     if (!fs.existsSync(filePath)) {
       return [];
     }
     return JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  } catch {
+  } catch (err) {
+    console.error("Error reading file:", err);
     return [];
   }
 };
 
 const writeJsonFile = (filePath, data) => {
   try {
+    initializeStorage();
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
   } catch (err) {
     console.error(`Error writing to ${filePath}:`, err);
