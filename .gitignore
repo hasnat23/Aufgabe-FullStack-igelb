@@ -1,7 +1,7 @@
 node_modules/
-<<<<<<< HEAD
 dist/
 dist-server/
+build/
 .env
 .env.local
 *.log
@@ -15,9 +15,4 @@ yarn-error.log*
 *.swo
 coverage/
 .nyc_output/
-=======
-.env
-.DS_Store
-dist/
-build/
->>>>>>> 05552021a725ecc36374bb584cfba209dcc38417
+src/**/*.js

@@ -60,18 +60,18 @@ export function WebsiteItem({
           <div className="mt-3 pt-3 border-t border-gray-100">
             <p className="text-sm text-gray-600">
               <span className="font-medium">Letzte Überprüfung:</span>{" "}
-              {new Date(lastChange.data?.timestamp).toLocaleString("de-DE")}
+              {new Date(lastChange.data.timestamp).toLocaleString("de-DE")}
             </p>
             <p className="text-sm text-gray-600 mt-1">
               <span className="font-medium">Status:</span>{" "}
               <span
                 className={
-                  lastChange.data?.similarity ?? 1 > 0.95
+                  (lastChange.data.similarity ?? 1) > 0.95
                     ? "text-green-600"
                     : "text-orange-600"
                 }
               >
-                {lastChange.data?.similarity
+                {lastChange.data.similarity
                   ? `${(lastChange.data.similarity * 100).toFixed(0)}% ähnlich`
                   : "Änderungen erkannt"}
               </span>
@@ -99,10 +99,10 @@ export function WebsiteItem({
                 className="bg-white p-3 rounded border border-gray-200 text-sm"
               >
                 <p className="text-gray-500 mb-2">
-                  {new Date(change.data?.timestamp).toLocaleString("de-DE")}
+                  {new Date(change.data.timestamp).toLocaleString("de-DE")}
                 </p>
                 <p className="text-gray-700 whitespace-pre-wrap max-h-48 overflow-y-auto">
-                  {change.data?.changes ||
+                  {change.data.changes ||
                     "Keine Änderungsbeschreibung verfügbar"}
                 </p>
               </div>

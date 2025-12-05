@@ -20,11 +20,11 @@ export class APIError extends Error {
  */
 function handleError(error: unknown, context: string): APIError {
   if (axios.isAxiosError(error)) {
-    const axiosError = error as AxiosError;
+    const axiosError = error as AxiosError<{ error?: string }>;
     const statusCode = axiosError.response?.status ?? null;
     const message = `${context}: ${
       axiosError.response?.status ?? "Netzwerkfehler"
-    } - ${(axiosError.response?.data as any)?.error || axiosError.message}`;
+    } - ${axiosError.response?.data?.error || axiosError.message}`;
     return new APIError(statusCode, error, message);
   }
 

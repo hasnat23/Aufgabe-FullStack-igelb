@@ -6,10 +6,21 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/api': {
+      '/websites': {
         target: 'http://localhost:5000',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        changeOrigin: true
+      },
+      '/crawl': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+      },
+      '/changes': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+      },
+      '/health': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
       }
     }
   }

@@ -1,10 +1,13 @@
-import { expect, it, describe, vi, beforeEach, afterEach } from 'vitest'
+import { expect, it, describe, vi, beforeEach, afterEach, Mock } from 'vitest'
 import axios from 'axios'
 import { fetchWebsites, createWebsite, triggerCrawl, APIError } from '../api/client'
 
 vi.mock('axios')
 
-const mockedAxios = axios as any
+// Type the mocked axios methods
+const mockedAxiosGet = axios.get as Mock
+const mockedAxiosPost = axios.post as Mock
+const mockedIsAxiosError = axios.isAxiosError as unknown as Mock
 
 describe('API Client', () => {
   beforeEach(() => {
@@ -20,25 +23,25 @@ describe('API Client', () => {
       const mockData = [
         { id: '1', url: 'https://example.com', name: 'Example', createdAt: '2024-01-01' }
       ]
-      mockedAxios.get.mockResolvedValueOnce({ data: mockData })
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockData })
 
       const result = await fetchWebsites()
 
       expect(result).toEqual(mockData)
-      expect(mockedAxios.get).toHaveBeenCalledWith('/api/websites', { timeout: 10000 })
+      expect(mockedAxiosGet).toHaveBeenCalledWith('/websites', { timeout: 10000 })
     })
 
     it('should handle network errors gracefully', async () => {
       const mockError = new Error('Network error')
-      mockedAxios.isAxiosError.mockReturnValueOnce(false)
-      mockedAxios.get.mockRejectedValueOnce(mockError)
+      mockedIsAxiosError.mockReturnValueOnce(false)
+      mockedAxiosGet.mockRejectedValueOnce(mockError)
 
       try {
         await fetchWebsites()
         expect.fail('Should have thrown an error')
       } catch (error) {
         expect(error).toBeInstanceOf(APIError)
-        expect((error as APIError).message).toContain('Failed to fetch websites')
+        expect((error as APIError).message).toContain('Fehler beim Abrufen von Websites')
       }
     })
 
@@ -50,8 +53,8 @@ describe('API Client', () => {
         },
         message: 'Request failed'
       }
-      mockedAxios.isAxiosError.mockReturnValueOnce(true)
-      mockedAxios.get.mockRejectedValueOnce(mockError)
+      mockedIsAxiosError.mockReturnValueOnce(true)
+      mockedAxiosGet.mockRejectedValueOnce(mockError)
 
       try {
         await fetchWebsites()
@@ -66,13 +69,13 @@ describe('API Client', () => {
   describe('createWebsite', () => {
     it('should create a website successfully', async () => {
       const mockData = { id: '1', url: 'https://new.com', name: 'New Site', createdAt: '2024-01-01' }
-      mockedAxios.post.mockResolvedValueOnce({ data: mockData })
+      mockedAxiosPost.mockResolvedValueOnce({ data: mockData })
 
       const result = await createWebsite({ url: 'https://new.com', name: 'New Site' })
 
       expect(result).toEqual(mockData)
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        '/api/websites',
+      expect(mockedAxiosPost).toHaveBeenCalledWith(
+        '/websites',
         { url: 'https://new.com', name: 'New Site' },
         { timeout: 10000 }
       )
@@ -86,15 +89,15 @@ describe('API Client', () => {
         },
         message: 'Request failed'
       }
-      mockedAxios.isAxiosError.mockReturnValueOnce(true)
-      mockedAxios.post.mockRejectedValueOnce(mockError)
+      mockedIsAxiosError.mockReturnValueOnce(true)
+      mockedAxiosPost.mockRejectedValueOnce(mockError)
 
       try {
         await createWebsite({ url: 'invalid', name: 'Test' })
         expect.fail('Should have thrown an error')
       } catch (error) {
         expect(error).toBeInstanceOf(APIError)
-        expect((error as APIError).message).toContain('Failed to create website')
+        expect((error as APIError).message).toContain('Fehler beim Erstellen der Website')
       }
     })
   })
@@ -111,25 +114,25 @@ describe('API Client', () => {
           contentHash: 'hash123'
         }
       }
-      mockedAxios.post.mockResolvedValueOnce({ data: mockData })
+      mockedAxiosPost.mockResolvedValueOnce({ data: mockData })
 
       const result = await triggerCrawl('1')
 
       expect(result.success).toBe(true)
-      expect(mockedAxios.post).toHaveBeenCalledWith('/api/crawl/1', {}, { timeout: 30000 })
+      expect(mockedAxiosPost).toHaveBeenCalledWith('/crawl/1', {}, { timeout: 30000 })
     })
 
     it('should handle crawl timeout errors', async () => {
       const mockError = new Error('Request timeout')
-      mockedAxios.isAxiosError.mockReturnValueOnce(false)
-      mockedAxios.post.mockRejectedValueOnce(mockError)
+      mockedIsAxiosError.mockReturnValueOnce(false)
+      mockedAxiosPost.mockRejectedValueOnce(mockError)
 
       try {
         await triggerCrawl('1')
         expect.fail('Should have thrown an error')
       } catch (error) {
         expect(error).toBeInstanceOf(APIError)
-        expect((error as APIError).message).toContain('Failed to crawl website 1')
+        expect((error as APIError).message).toContain('Fehler beim Crawl der Website 1')
       }
     })
   })

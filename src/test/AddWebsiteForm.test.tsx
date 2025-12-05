@@ -3,33 +3,33 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { AddWebsiteForm } from '../components/AddWebsiteForm'
 
 describe('AddWebsiteForm', () => {
-  let mockOnSubmit: ReturnType<typeof vi.fn>
+  let mockOnSubmit: ReturnType<typeof vi.fn<[string, string], Promise<void>>>
 
   beforeEach(() => {
-    mockOnSubmit = vi.fn().mockResolvedValue(undefined)
+    mockOnSubmit = vi.fn<[string, string], Promise<void>>().mockResolvedValue(undefined)
   })
 
   it('should render form inputs', () => {
     render(<AddWebsiteForm onSubmit={mockOnSubmit} />)
     
-    expect(screen.getByLabelText(/website name/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/website-name/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/url/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /add website/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /website hinzufügen/i })).toBeInTheDocument()
   })
 
   it('should validate URL format', async () => {
     render(<AddWebsiteForm onSubmit={mockOnSubmit} />)
     
-    const nameInput = screen.getByLabelText(/website name/i)
+    const nameInput = screen.getByLabelText(/website-name/i)
     const urlInput = screen.getByLabelText(/url/i)
-    const submitButton = screen.getByRole('button', { name: /add website/i })
+    const submitButton = screen.getByRole('button', { name: /website hinzufügen/i })
 
     fireEvent.change(nameInput, { target: { value: 'Test Site' } })
     fireEvent.change(urlInput, { target: { value: 'invalid-url' } })
     fireEvent.click(submitButton)
 
     await waitFor(() => {
-      expect(screen.getByText(/invalid url format/i)).toBeInTheDocument()
+      expect(screen.getByText(/ungültiges url-format/i)).toBeInTheDocument()
     })
     expect(mockOnSubmit).not.toHaveBeenCalled()
   })
@@ -37,9 +37,9 @@ describe('AddWebsiteForm', () => {
   it('should submit valid form data', async () => {
     render(<AddWebsiteForm onSubmit={mockOnSubmit} />)
     
-    const nameInput = screen.getByLabelText(/website name/i) as HTMLInputElement
+    const nameInput = screen.getByLabelText(/website-name/i) as HTMLInputElement
     const urlInput = screen.getByLabelText(/url/i) as HTMLInputElement
-    const submitButton = screen.getByRole('button', { name: /add website/i })
+    const submitButton = screen.getByRole('button', { name: /website hinzufügen/i })
 
     fireEvent.change(nameInput, { target: { value: 'Google' } })
     fireEvent.change(urlInput, { target: { value: 'https://google.com' } })
@@ -60,9 +60,9 @@ describe('AddWebsiteForm', () => {
     
     render(<AddWebsiteForm onSubmit={mockOnSubmit} />)
     
-    const nameInput = screen.getByLabelText(/website name/i)
+    const nameInput = screen.getByLabelText(/website-name/i)
     const urlInput = screen.getByLabelText(/url/i)
-    const submitButton = screen.getByRole('button', { name: /add website/i })
+    const submitButton = screen.getByRole('button', { name: /website hinzufügen/i })
 
     fireEvent.change(nameInput, { target: { value: 'Test' } })
     fireEvent.change(urlInput, { target: { value: 'https://test.com' } })

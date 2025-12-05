@@ -30,7 +30,6 @@ export interface CrawlResponse {
 }
 
 export interface ChangeResponse {
-  success: boolean
-  data?: ChangeDetection
-  error?: string
+  id: string
+  data: ChangeDetection
 }

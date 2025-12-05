@@ -90,7 +90,7 @@ export function AddWebsiteForm({
           </label>
           <input
             id="url"
-            type="url"
+            type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="https://example.com"
