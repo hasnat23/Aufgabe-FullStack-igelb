@@ -1,8 +1,8 @@
-const fs = require("fs");
-const path = require("path");
-const https = require("https");
-const crypto = require("crypto");
-const { v4: uuidv4 } = require("uuid");
+import fs from "fs";
+import path from "path";
+import https from "https";
+import crypto from "crypto";
+import { v4 as uuidv4 } from "uuid";
 
 const DATA_DIR = path.join("/tmp", "data");
 const WEBSITES_FILE = path.join(DATA_DIR, "websites.json");
@@ -172,3 +172,5 @@ module.exports = async (req, res) => {
 
   return res.status(405).json({ error: "Method not allowed" });
 };
+
+export default module.exports;

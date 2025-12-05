@@ -1,6 +1,6 @@
-const fs = require("fs");
-const path = require("path");
-const { v4: uuidv4 } = require("uuid");
+import fs from "fs";
+import path from "path";
+import { v4 as uuidv4 } from "uuid";
 
 const DATA_DIR = path.join("/tmp", "data");
 const WEBSITES_FILE = path.join(DATA_DIR, "websites.json");
@@ -135,7 +135,9 @@ module.exports = async (req, res) => {
 
   console.log("⚠️ Method not allowed:", req.method);
   return res.status(405).json({ error: "Method not allowed" });
-};    return res.status(204).end();
+};
+
+export default module.exports;    return res.status(204).end();
     } catch (error) {
       console.error("DELETE /websites error:", error);
       return res.status(500).json({ error: "Failed to delete website", details: error.message });

@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 const DATA_DIR = path.join("/tmp", "data");
 const CHANGES_FILE = path.join(DATA_DIR, "changes.json");
@@ -67,3 +67,5 @@ module.exports = async (req, res) => {
 
   return res.status(405).json({ error: "Method not allowed" });
 };
+
+export default module.exports;

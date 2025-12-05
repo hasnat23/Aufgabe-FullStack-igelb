@@ -1,42 +1,20 @@
 {
-  "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/websites/:path*",
-      "destination": "/api/websites.cjs"
+      "source": "/websites/:id",
+      "destination": "/api/websites"
     },
     {
       "source": "/websites",
-      "destination": "/api/websites.cjs"
+      "destination": "/api/websites"
     },
     {
       "source": "/crawl/:websiteId",
-      "destination": "/api/crawl.cjs?websiteId=:websiteId"
+      "destination": "/api/crawl"
     },
     {
       "source": "/changes/:websiteId",
-      "destination": "/api/changes.cjs?websiteId=:websiteId"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type"
-        }
-      ]
+      "destination": "/api/changes"
     }
   ]
 }
